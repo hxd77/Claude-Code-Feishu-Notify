@@ -1,55 +1,71 @@
 <div align="center">
 
-<img src="diagram/architecture.svg" alt="Architecture" width="100%"/>
+<br>
 
-# Claude Code → 飞书通知 Hook
+<img src="assets/logo.svg" alt="Claude Code Feishu Notify" width="600"/>
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Python](https://img.shields.io/badge/Python-3.7+-blue?logo=python&logoColor=white)](https://www.python.org/)
-[![Bash](https://img.shields.io/badge/Bash-4.0+-4EAA25?logo=gnubash&logoColor=white)](https://www.gnu.org/software/bash/)
-[![Feishu](https://img.shields.io/badge/Feishu-API-3370FF?logo=feishu&logoColor=white)](https://open.feishu.cn)
-[![Platform](https://img.shields.io/badge/Platform-Win%20%7C%20Mac%20%7C%20Linux-lightgrey)]()
+<br>
 
-**Claude Code 会话结束 → 飞书群实时卡片 → 60 秒后自动消失**
+[![License](https://img.shields.io/github/license/hxd77/Claude-Code-Feishu-Notify?color=f59e0b&style=flat-square)](LICENSE)
+[![Stars](https://img.shields.io/github/stars/hxd77/Claude-Code-Feishu-Notify?color=f59e0b&style=flat-square)](https://github.com/hxd77/Claude-Code-Feishu-Notify/stargazers)
+![Python](https://img.shields.io/badge/Python-3.7+-3776AB?logo=python&logoColor=white&style=flat-square)
+![Bash](https://img.shields.io/badge/Bash-4.0+-4EAA25?logo=gnubash&logoColor=white&style=flat-square)
+![Feishu](https://img.shields.io/badge/Feishu-Lark-3370FF?logo=feishu&logoColor=white&style=flat-square)
+![Platform](https://img.shields.io/badge/Windows%20%7C%20macOS%20%7C%20Linux-6b7280?style=flat-square)
+
+<br>
+
+<h3>Claude Code 每完成一次对话 👉 飞书群收到一张卡片 👉 自动消失</h3>
 
 </div>
 
+<br>
+
 ---
 
-## 能做什么
+<br>
 
 <table>
 <tr>
-<td width="50%">
-
-### 🟡 需要你操作
-
-Claude Code 弹出权限确认 / 主动提问时，飞书群**立刻**收到黄色提醒卡片
-
-> *"回到终端，Claude 在等你"*
-
+<td width="33%" align="center">
+  <h3>🟡</h3>
+  <b>需要操作</b>
+  <br><sub>权限弹窗 / 提问时</sub>
+  <br><sub>立刻推送黄色卡片</sub>
 </td>
-<td width="50%">
-
-###  任务完成
-
-会话结束后推送绿色摘要卡片，包含完整用量数据
-
-> *Token / 耗时 / 费用一目了然*
-
+<td width="33%" align="center">
+  <h3>🟢</h3>
+  <b>任务完成</b>
+  <br><sub>会话结束自动推送</sub>
+  <br><sub>Token · 耗时 · 费用</sub>
+</td>
+<td width="33%" align="center">
+  <h3>🔥</h3>
+  <b>阅后即焚</b>
+  <br><sub>60 秒后自动删除</sub>
+  <br><sub>API 模式下生效</sub>
 </td>
 </tr>
 </table>
 
-### 🔥 阅后即焚
+<br>
 
-API 模式下，消息在 **60 秒后自动删除**——需要时看得见，不需要时不占屏幕。
+---
+
+## 架构总览
+
+<p align="center">
+  <img src="diagram/architecture.svg" alt="Architecture" width="100%"/>
+</p>
+
+> [!NOTE]
+> **三层 Hook 覆盖** — `Notification` 捕获权限弹窗，`PostToolUse` 捕获主动提问，`Stop` 处理会话结束。API 失败自动降级 Webhook，消息不丢。
 
 ---
 
 ## 快速开始
 
-### 1. 安装
+### 📦 安装
 
 ```bash
 mkdir -p ~/.claude/hooks
@@ -57,106 +73,176 @@ cp feishu-notify.sh feishu-ask.sh ~/.claude/hooks/
 chmod +x ~/.claude/hooks/feishu-notify.sh ~/.claude/hooks/feishu-ask.sh
 ```
 
-### 2. 配置 Hook
+### ⚙️ 配置
 
-把 `settings.hook.json` 合并到 `~/.claude/settings.json`（或手动添加 hooks 区块）。
+将 `settings.hook.json` 合并到 `~/.claude/settings.json`，或手动添加：
 
-### 3. 选择发送模式
+```json
+{
+  "hooks": {
+    "Stop": [{ "hooks": [{ "type": "command", "command": "bash ~/.claude/hooks/feishu-notify.sh" }] }],
+    "PostToolUse": [{ "matcher": "AskUserQuestion", "hooks": [{ "type": "command", "command": "bash ~/.claude/hooks/feishu-ask.sh" }] }],
+    "Notification": [{ "hooks": [{ "type": "command", "command": "bash ~/.claude/hooks/feishu-ask.sh" }] }]
+  }
+}
+```
+
+### 🔗 选择通道
 
 <details open>
-<summary><b>🔌 模式 A：Webhook（30 秒搞定）</b></summary>
+<summary><b>🔌 Webhook 模式 — 零配置，30 秒上线</b></summary>
 
-飞书群 → 设置 → 群机器人 → 添加自定义机器人 → 复制地址，填入脚本：
+<br>
+
+飞书群 → 设置 → 群机器人 → 自定义机器人 → 复制 Webhook 地址，编辑脚本顶部：
 
 ```bash
 FEISHU_WEBHOOK_ASK_URL="https://open.feishu.cn/open-apis/bot/v2/hook/xxx"
 FEISHU_WEBHOOK_DONE_URL="https://open.feishu.cn/open-apis/bot/v2/hook/xxx"
 ```
 
-> ⚠️ 不支持自动删除，其他功能完整。
+> ⚠️ Webhook 不支持消息自动删除，其余功能完整。
 
 </details>
 
-<details>
-<summary><b>⚡ 模式 B：API（完整功能 + 阅后即焚）</b></summary>
+<br>
 
-1. [飞书开放平台](https://open.feishu.cn) → 创建企业自建应用
-2. 添加 **机器人** 能力 + 权限 `im:message:send` `im:message:delete`
-3. 发布 → 审批 → 机器人拉入目标群
-4. 获取 `chat_id`（API 调试台 → `GET /im/v1/chats`）
-5. 填入脚本：
+<details>
+<summary><b>⚡ API 模式 — 阅后即焚 + 完整控制</b></summary>
+
+<br>
+
+> [!IMPORTANT]
+> 需要 [飞书开放平台](https://open.feishu.cn) 创建应用并开启机器人能力。
 
 ```bash
 FEISHU_APP_ID="cli_xxxxxxxx"
 FEISHU_APP_SECRET="xxxxxxxx"
 FEISHU_CHAT_ID_ASK="oc_xxxxxxxx"
 FEISHU_CHAT_ID_DONE="oc_xxxxxxxx"
-FEISHU_DELETE_AFTER_SEC=60
+FEISHU_DELETE_AFTER_SEC=60   # 0 = 不删除
 ```
+
+**所需权限**：`im:message:send` `im:message:delete`
 
 </details>
 
-### 4. 验证
+<br>
+
+### ✅ 验证
 
 ```bash
-echo '{"event":"Stop","session_id":"test","cwd":"/project","model":"test"}' \
+echo '{"event":"Stop","session_id":"test","cwd":"/project","model":"deepseek-v4"}' \
   | CLAUDE_TASK="测试消息" bash ~/.claude/hooks/feishu-notify.sh
 ```
 
-飞书群收到卡片即为成功。
+<br>
 
 ---
 
-## DONE 卡片详情
+## DONE 卡片内容
 
-| 字段 | 说明 |
-|------|------|
-| 📋 任务 | Claude 当前执行的任务描述 |
-| 📁 目录 | 项目工作目录 |
-| 🤖 模型 | 使用的 AI 模型名称 |
-| ⏱️ 耗时 | 任务执行时长（分/秒） |
-| 🔤 Token | 输入 / 缓存写入 / 输出 / 总计 |
-| 💰 费用 | 预估 USD 费用 |
-| 🆔 会话 ID | 当前会话唯一标识 |
-| 🔥 自毁 | 60s 倒计时后自动删除（API 模式） |
+<br>
+
+<table>
+<tr>
+  <td><b>📋 任务</b></td>
+  <td>Claude 当前执行的任务描述</td>
+  <td><b>📁 目录</b></td>
+  <td>项目工作目录</td>
+</tr>
+<tr>
+  <td><b>🤖 模型</b></td>
+  <td>当前使用的 AI 模型</td>
+  <td><b>⏱️ 耗时</b></td>
+  <td>X 分 Y 秒</td>
+</tr>
+<tr>
+  <td><b>🔤 Token</b></td>
+  <td>输入 / 缓存写入 / 输出 / 总计</td>
+  <td><b>💰 费用</b></td>
+  <td>预估 USD 费用</td>
+</tr>
+<tr>
+  <td><b>🆔 会话 ID</b></td>
+  <td>唯一会话标识</td>
+  <td><b>🔥 自毁</b></td>
+  <td>60s 后自动删除（API）</td>
+</tr>
+</table>
+
+<br>
 
 ---
 
 ## Hook 覆盖矩阵
 
-| 触发场景 | Hook 事件 | 飞书卡片 |
-|---------|----------|---------|
-| 权限确认弹窗 | `Notification` | ASK |
-| Claude 主动提问 | `PostToolUse` (AskUserQuestion) | ASK |
-| 会话结束（有等待） | `Stop` + 检测 Prompt | ASK |
-| 会话结束（已完成） | `Stop` + 无 Prompt | DONE |
+| 你看到的 | 触发来源 | Hook 事件 | 卡片 |
+|---------|---------|----------|------|
+| `Do you want to proceed?` | 权限弹窗 | `Notification` | ASK 黄卡 |
+| `是否允许执行 xxx?` | Claude 提问 | `PostToolUse` | ASK 黄卡 |
+| 会话结束（有待处理） | Stop + 检测 Prompt | `Stop` | ASK 黄卡 |
+| 会话结束（全部完成） | Stop | `Stop` | DONE 绿卡 |
+
+> [!TIP]
+> **所有场景全覆盖** — 不会被 Claude 的权限弹窗打断后忘记回来查看。
+
+<br>
 
 ---
 
-## 项目结构
+## 文件结构
 
 ```
-.
-├── feishu-notify.sh      # 主脚本：双通道路由 + API/Webhook 自动降级
-├── feishu-ask.sh          # 包装器：AskUserQuestion / Notification → ASK 通道
-├── settings.hook.json     # Hook 配置（合并到 ~/.claude/settings.json）
+claude-code-feishu-hook/
+├── feishu-notify.sh        # 主脚本 · 路由 + 发送 + 自毁调度
+├── feishu-ask.sh            # 包装器 · AskUserQuestion → ASK
+├── settings.hook.json       # Hook 配置参考
 ├── diagram/
-│   └── architecture.svg  # 架构流程图
-└── .gitignore
+│   └── architecture.svg     # 架构流程图
+├── assets/
+│   └── logo.svg             # 项目 Logo
+├── .gitignore
+└── README.md
 ```
+
+<br>
 
 ---
 
-## 环境要求
+## 终端演示
 
-- Python 3（标准库，零依赖）
-- Bash（Linux / macOS / Git Bash / WSL）
-- 飞书账号
+```
+$ claude                    # 你在终端输入需求
+...
+Claude Code 执行中 ...
+
+                         ┌─────────────────────────┐
+  💬 飞书群消息 ← ← ←    │  🟢 Claude Code          │
+                         │  任务执行完成            │
+                         │  📋 重构 auth 模块       │
+                         │  🤖 deepseek-v4-pro[1m]  │
+                         │  ⏱️ 2分15秒              │
+                         │  🔤 输入 12,000 / 输出 3,420 / 总计 15,420 │
+                         │  💰 $0.015420           │
+                         │  ⏰ 60s 后自动删除       │
+                         └─────────────────────────┘
+                                          ↓
+                                    60 秒后消失 ✨
+```
+
+<br>
 
 ---
 
 <div align="center">
 
-**MIT License** · Made with Claude Code
+### ⭐ 觉得有用？给个 Star
+
+**[Star this repo](https://github.com/hxd77/Claude-Code-Feishu-Notify)** · **[Report Bug](https://github.com/hxd77/Claude-Code-Feishu-Notify/issues)** · **[Request Feature](https://github.com/hxd77/Claude-Code-Feishu-Notify/issues)**
+
+<br>
+
+MIT License · Built with Claude Code
 
 </div>
