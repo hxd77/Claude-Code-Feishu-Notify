@@ -17,19 +17,13 @@
 <div align="center">
   <img src="C:\Users\DELL\Desktop\claude-code-feishu-hook\assets\demo.gif" alt="Workflow Demo" width="800" style="border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);"/>
 </div>
-
-
-
-</div>
-
 <br>
 
 ---
 
 <br>
 
-<table>
- <center>
+<table align="center">
 <tr>
 <td width="33%" align="center">
   <h3>🟡</h3>
@@ -50,8 +44,8 @@
   <br><sub>API 模式下生效</sub>
 </td>
 </tr>
-    </center>
 </table>
+
 
 <br>
 
