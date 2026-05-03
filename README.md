@@ -1,21 +1,25 @@
+
+
 <div align="center">
 
 <br>
 
-<img src="assets/logo.svg" alt="Claude Code Feishu Notify" width="600"/>
+<img src="https://raw.githubusercontent.com/hxd77/BlogImage/master/TyporaImage/20260503160159910.svg" alt="Claude Code Feishu Notify" width="600"/>
 
 <br>
 
-[![License](https://img.shields.io/github/license/hxd77/Claude-Code-Feishu-Notify?color=f59e0b&style=flat-square)](LICENSE)
-[![Stars](https://img.shields.io/github/stars/hxd77/Claude-Code-Feishu-Notify?color=f59e0b&style=flat-square)](https://github.com/hxd77/Claude-Code-Feishu-Notify/stargazers)
-![Python](https://img.shields.io/badge/Python-3.7+-3776AB?logo=python&logoColor=white&style=flat-square)
-![Bash](https://img.shields.io/badge/Bash-4.0+-4EAA25?logo=gnubash&logoColor=white&style=flat-square)
-![Feishu](https://img.shields.io/badge/Feishu-Lark-3370FF?logo=feishu&logoColor=white&style=flat-square)
-![Platform](https://img.shields.io/badge/Windows%20%7C%20macOS%20%7C%20Linux-6b7280?style=flat-square)
+![](https://raw.githubusercontent.com/hxd77/BlogImage/master/TyporaImage/20260503160248857.svg+xml;charset=utf-8)
 
 <br>
 
-<h3>Claude Code 每完成一次对话 👉 飞书群收到一张卡片 👉 自动消失</h3>
+**Zero-Config Webhook** | **Native API 阅后即焚** | **全生命周期 Hook**
+
+**告别终端死盯。将 Claude Code 的每一次决策、耗时与 Token 开销，优雅地推送到你的飞书。阅后即焚，不留痕迹。**
+
+<br>
+
+<!-- 核心演示 GIF 占位图，请将录制好的 GIF 命名为 demo.gif 放入 assets 文件夹 -->
+<img src="C:\Users\DELL\Desktop\claude-code-feishu-hook\assets\demo.gif" alt="Workflow Demo" width="800" style="border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);"/>
 
 </div>
 
@@ -52,7 +56,18 @@
 
 ---
 
-## 架构总览
+## 🎨 真实卡片预览
+
+<p align="center">
+  <!-- 这里放真实的飞书卡片截图，建议将图片放入 assets 文件夹 -->
+  <img src="assets/card-ask.png" alt="ASK Card" width="45%"/>
+  &nbsp;&nbsp;
+  <img src="assets/card-done.png" alt="DONE Card" width="45%"/>
+</p>
+
+---
+
+## 🏗️ 架构总览
 
 <p align="center">
   <img src="diagram/architecture.svg" alt="Architecture" width="100%"/>
@@ -63,7 +78,7 @@
 
 ---
 
-## 快速开始
+## 🚀 快速开始
 
 ### 📦 安装
 
@@ -89,31 +104,18 @@ chmod +x ~/.claude/hooks/feishu-notify.sh ~/.claude/hooks/feishu-ask.sh
 
 ### 🔗 选择通道
 
-<details open>
-<summary><b>🔌 Webhook 模式 — 零配置，30 秒上线</b></summary>
-
-<br>
-
 飞书群 → 设置 → 群机器人 → 自定义机器人 → 复制 Webhook 地址，编辑脚本顶部：
 
 ```bash
-FEISHU_WEBHOOK_ASK_URL="https://open.feishu.cn/open-apis/bot/v2/hook/xxx"
-FEISHU_WEBHOOK_DONE_URL="https://open.feishu.cn/open-apis/bot/v2/hook/xxx"
+FEISHU_WEBHOOK_ASK_URL="[https://open.feishu.cn/open-apis/bot/v2/hook/xxx](https://open.feishu.cn/open-apis/bot/v2/hook/xxx)"
+FEISHU_WEBHOOK_DONE_URL="[https://open.feishu.cn/open-apis/bot/v2/hook/xxx](https://open.feishu.cn/open-apis/bot/v2/hook/xxx)"
 ```
 
 > ⚠️ Webhook 不支持消息自动删除，其余功能完整。
 
-</details>
-
-<br>
-
-<details>
-<summary><b>⚡ API 模式 — 阅后即焚 + 完整控制</b></summary>
-
-<br>
-
-> [!IMPORTANT]
-> 需要 [飞书开放平台](https://open.feishu.cn) 创建应用并开启机器人能力。
+> \[!IMPORTANT\] 需要 
+> [飞书开放平台](https://open.feishu.cn)
+> 创建应用并开启机器人能力。
 
 ```bash
 FEISHU_APP_ID="cli_xxxxxxxx"
@@ -125,22 +127,17 @@ FEISHU_DELETE_AFTER_SEC=60   # 0 = 不删除
 
 **所需权限**：`im:message:send` `im:message:delete`
 
-</details>
-
-<br>
-
-### ✅ 验证
+### ✅ 验证测试
 
 ```bash
 echo '{"event":"Stop","session_id":"test","cwd":"/project","model":"deepseek-v4"}' \
   | CLAUDE_TASK="测试消息" bash ~/.claude/hooks/feishu-notify.sh
 ```
 
-<br>
+* * *
 
----
-
-## DONE 卡片内容
+📊 DONE 卡片内容
+------------
 
 <br>
 
@@ -173,76 +170,78 @@ echo '{"event":"Stop","session_id":"test","cwd":"/project","model":"deepseek-v4"
 
 <br>
 
----
+* * *
 
-## Hook 覆盖矩阵
+🛡️ Hook 覆盖矩阵
+-------------
 
-| 你看到的 | 触发来源 | Hook 事件 | 卡片 |
-|---------|---------|----------|------|
-| `Do you want to proceed?` | 权限弹窗 | `Notification` | ASK 黄卡 |
-| `是否允许执行 xxx?` | Claude 提问 | `PostToolUse` | ASK 黄卡 |
-| 会话结束（有待处理） | Stop + 检测 Prompt | `Stop` | ASK 黄卡 |
-| 会话结束（全部完成） | Stop | `Stop` | DONE 绿卡 |
+| 你看到的终端提示          | 触发来源           | Hook 事件      | 推送卡片    |
+| ------------------------- | ------------------ | -------------- | ----------- |
+| `Do you want to proceed?` | 权限弹窗           | `Notification` | 🟡 ASK 黄卡  |
+| `是否允许执行 xxx?`       | Claude 提问        | `PostToolUse`  | 🟡 ASK 黄卡  |
+| 会话结束（有待处理）      | Stop + 检测 Prompt | `Stop`         | 🟡 ASK 黄卡  |
+| 会话结束（全部完成）      | Stop               | `Stop`         | 🟢 DONE 绿卡 |
 
-> [!TIP]
-> **所有场景全覆盖** — 不会被 Claude 的权限弹窗打断后忘记回来查看。
+> \[!TIP\] **所有场景无死角覆盖** — 放心去喝咖啡，不会被 Claude 的中途权限弹窗打断后忘记回来查看。
 
-<br>
+* * *
 
----
-
-## 文件结构
+📂 文件结构
+-------
 
 ```
 claude-code-feishu-hook/
-├── feishu-notify.sh        # 主脚本 · 路由 + 发送 + 自毁调度
+├── feishu-notify.sh         # 主脚本 · 路由 + 发送 + 自毁调度
 ├── feishu-ask.sh            # 包装器 · AskUserQuestion → ASK
 ├── settings.hook.json       # Hook 配置参考
 ├── diagram/
 │   └── architecture.svg     # 架构流程图
 ├── assets/
-│   └── logo.svg             # 项目 Logo
+│   ├── logo.svg             # 项目 Logo
+│   ├── demo.gif             # 动态演示
+│   ├── card-ask.png         # 黄色提醒卡片截图
+│   └── card-done.png        # 绿色完成卡片截图
 ├── .gitignore
 └── README.md
 ```
 
-<br>
+> [!TIP]
+> **所有场景全覆盖** — 不会被 Claude 的权限弹窗打断后忘记回来查看。
 
----
+* * *
 
-## 终端演示
+💻 终端工作流演示
+----------
 
 ```
-$ claude                    # 你在终端输入需求
+$ claude "帮忙分析一下这个 Rust 模块的性能瓶颈，重点看看内存分配和并发机制"
 ...
 Claude Code 执行中 ...
 
                          ┌─────────────────────────┐
-  💬 飞书群消息 ← ← ←    │  🟢 Claude Code          │
+ 💬 飞书群消息 ← ← ←     │  🟢 Claude Code          │
                          │  任务执行完成            │
-                         │  📋 重构 auth 模块       │
-                         │  🤖 deepseek-v4-pro[1m]  │
-                         │  ⏱️ 2分15秒              │
-                         │  🔤 输入 12,000 / 输出 3,420 / 总计 15,420 │
-                         │  💰 $0.015420           │
-                         │  ⏰ 60s 后自动删除       │
+                         │  📋 Rust 模块性能分析    │
+                         │  🤖 claude-3-7-sonnet   │
+                         │  ⏱️ 1分45秒              │
+                         │  🔤 总计 18,420 Tokens   │
+                         │  ⏰ 60s 后自动删除        │
                          └─────────────────────────┘
-                                          ↓
-                                    60 秒后消失 ✨
+                                      ↓
+                                60 秒后消失 ✨
 ```
 
-<br>
+* * *
 
----
+### ⭐ 觉得好用？给个 Star 支持一下
 
-<div align="center">
-
-### ⭐ 觉得有用？给个 Star
-
-**[Star this repo](https://github.com/hxd77/Claude-Code-Feishu-Notify)** · **[Report Bug](https://github.com/hxd77/Claude-Code-Feishu-Notify/issues)** · **[Request Feature](https://github.com/hxd77/Claude-Code-Feishu-Notify/issues)**
-
-<br>
+**
+[Star this repo](https://github.com/hxd77/Claude-Code-Feishu-Notify)
+** · **
+[Report Bug](https://github.com/hxd77/Claude-Code-Feishu-Notify/issues)
+** · **
+[Request Feature](https://github.com/hxd77/Claude-Code-Feishu-Notify/issues)
+**
 
 MIT License · Built with Claude Code
 
-</div>
