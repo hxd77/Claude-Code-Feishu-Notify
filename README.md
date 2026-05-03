@@ -13,7 +13,12 @@
 <br>
 
 <!-- 核心演示 GIF 占位图，请将录制好的 GIF 命名为 demo.gif 放入 assets 文件夹 -->
-<img  src="C:\Users\DELL\Desktop\claude-code-feishu-hook\assets\demo.gif" alt="Workflow Demo" width="800" style="border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);"/>
+
+<div align="center">
+  <img src="C:\Users\DELL\Desktop\claude-code-feishu-hook\assets\demo.gif" alt="Workflow Demo" width="800" style="border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);"/>
+</div>
+
+
 
 </div>
 
