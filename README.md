@@ -235,13 +235,11 @@ Claude Code 执行中 ...
 
 ### ⭐ 觉得好用？给个 Star 支持一下
 
-**
-[Star this repo](https://github.com/hxd77/Claude-Code-Feishu-Notify)
-** · **
-[Report Bug](https://github.com/hxd77/Claude-Code-Feishu-Notify/issues)
-** · **
-[Request Feature](https://github.com/hxd77/Claude-Code-Feishu-Notify/issues)
-**
+**· [Star this repo](https://github.com/hxd77/Claude-Code-Feishu-Notify)**
+
+**· [Report Bug](https://github.com/hxd77/Claude-Code-Feishu-Notify/issues)** 
+
+**· [Request Feature](https://github.com/hxd77/Claude-Code-Feishu-Notify/issues)**
 
 MIT License · Built with Claude Code
 
