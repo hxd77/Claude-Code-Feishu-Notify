@@ -6,12 +6,6 @@
 
 <img src="https://raw.githubusercontent.com/hxd77/BlogImage/master/TyporaImage/20260503160159910.svg" alt="Claude Code Feishu Notify" width="600"/>
 
-<br>
-
-![](https://raw.githubusercontent.com/hxd77/BlogImage/master/TyporaImage/20260503160248857.svg+xml;charset=utf-8)
-
-<br>
-
 **Zero-Config Webhook** | **Native API 阅后即焚** | **全生命周期 Hook**
 
 **告别终端死盯。将 Claude Code 的每一次决策、耗时与 Token 开销，优雅地推送到你的飞书。阅后即焚，不留痕迹。**
@@ -19,7 +13,7 @@
 <br>
 
 <!-- 核心演示 GIF 占位图，请将录制好的 GIF 命名为 demo.gif 放入 assets 文件夹 -->
-<img src="C:\Users\DELL\Desktop\claude-code-feishu-hook\assets\demo.gif" alt="Workflow Demo" width="800" style="border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);"/>
+<img  src="C:\Users\DELL\Desktop\claude-code-feishu-hook\assets\demo.gif" alt="Workflow Demo" width="800" style="border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);"/>
 
 </div>
 
@@ -30,6 +24,7 @@
 <br>
 
 <table>
+ <center>
 <tr>
 <td width="33%" align="center">
   <h3>🟡</h3>
@@ -50,6 +45,7 @@
   <br><sub>API 模式下生效</sub>
 </td>
 </tr>
+    </center>
 </table>
 
 <br>
@@ -235,11 +231,7 @@ Claude Code 执行中 ...
 
 ### ⭐ 觉得好用？给个 Star 支持一下
 
-**· [Star this repo](https://github.com/hxd77/Claude-Code-Feishu-Notify)**
-
-**· [Report Bug](https://github.com/hxd77/Claude-Code-Feishu-Notify/issues)** 
-
-**· [Request Feature](https://github.com/hxd77/Claude-Code-Feishu-Notify/issues)**
+**[Star this repo](https://github.com/hxd77/Claude-Code-Feishu-Notify) · [Report Bug](https://github.com/hxd77/Claude-Code-Feishu-Notify/issues) · [Request Feature](https://github.com/hxd77/Claude-Code-Feishu-Notify/issues) **
 
 MIT License · Built with Claude Code
 
