@@ -20,6 +20,16 @@
           }
         ]
       }
+    ],
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/feishu-ask.sh"
+          }
+        ]
+      }
     ]
   }
 }
